@@ -1,0 +1,216 @@
+﻿<!---------------------------------------------------------------------------
+
+// Usage:          Speeh Recognition | Speech Synthesizer
+// Implementation: Pure JavaScript - Web Speech API
+// Documentation:  https://wicg.github.io/speech-api/#biblio-htmlspeech
+
+---------------------------------------------------------------------------->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+   <title>Lynden Taylor</title>
+   <!-- CSS only -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+   <!-- JS, Popper.js, and jQuery -->
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+   <style>
+      .outer {
+         margin: auto;
+         width: 60%;
+         padding: 10px;
+         display: grid;
+      }
+
+      .container {
+         display: inline-flex;
+      }
+
+         .container > div {
+            flex: auto;
+         }
+
+      .button {
+         background: orange;
+         cursor: pointer;
+         border-radius: 50%
+      }
+
+         .button:hover {
+            cursor: pointer;
+            background-color: #a2bfc9;
+         }
+
+         .button:active {
+            background-color: #a2bfc9;
+            box-shadow: 0 2px #666;
+            transform: translateY(2px);
+         }
+      select{ background-color:antiquewhite;}
+
+      textarea {
+         -moz-appearance: textfield-multiline;
+         -webkit-appearance: textarea;
+         border: 1px solid purple;
+         font: large -moz-fixed;
+         font: -webkit-large-control;
+         font-family: "Comic Sans MS";
+         overflow: auto;
+         padding: 2px;
+         resize: both;
+         cursor: text;
+         background-color:antiquewhite;
+      }
+
+      body {
+    background: linear-gradient(to bottom, lavenderblush 0%, #ff99cc 100%);
+         color: mediumpurple;
+         font-family: Comic Sans MS;
+      }
+   </style>
+<!--   <script src="https://code.jquery.com/jquery-3.5.0.js"></script>-->
+
+</head>
+<body>
+   <section class="container"><div><h1><br/><br/> &nbsp; &nbsp; Lynden Taylor</h1></div><div><img src="https://images-na.ssl-images-amazon.com/images/I/51xBWJlqQZL.jpg" height="250" width="250" align="right"> </div></section>
+   <br />
+   <hr />
+   <br />
+   <br />
+   <div class='outer'>
+      <textarea id='say' contenteditable="true" rows='1' cols='50' placeholder='Daddy Loves Lynden!'>Your name is Lynden Taylor!</textarea>     <br />
+      <input type='button' class='button' id="button" value='Speak' onclick="textToSpeech();" />
+   </div>
+   <br />
+   <br />
+   <hr />
+
+   <div class='outer'>
+      <section class="container">
+
+         <div class="rate">
+            <span><b>Rate </b><a style="font: -webkit-small-control; font-family: Courier New, monospace">(0.1 - 10)</a></span>
+            <textarea id='rate' rows='1' cols='15'>0.9</textarea>
+         </div>
+         &nbsp; &nbsp; &nbsp;
+         <div class="pitch">
+
+            <span><b>Pitch </b><a style="font: -webkit-small-control; font-family: Courier New, monospace">(0.0 - 2.0)</a></span>
+            <textarea id='pitch' rows='1' cols='15'>0.9</textarea>
+         </div>
+         &nbsp; &nbsp; &nbsp;
+         <div class="volume">
+            <span><b>Volume </b><a style="font: -webkit-small-control; font-family: Courier New, monospace">(0.0 - 1.0)</a></span> <textarea id='volume' rows='1' cols='25'>1.0</textarea>
+         </div>
+         &nbsp; &nbsp; &nbsp;
+         <div class="voice">
+            <span><b>Voice </b><a style="font: -webkit-small-control; font-family: Courier New, monospace">( english )</a></span>
+            <select id="voices" name="voices">
+<!--
+               <option value="Microsoft Zira Desktop - English">Microsoft Zira Desktop - English (United States)</option>
+               <option value="Microsoft David Desktop - English (United States)">Microsoft David Desktop - English (United States)</option>
+               <option value="Google US English">Google US English</option>
+               <option value="Google UK English Female" selected="selected">Google UK English Female</option>
+               <option value="Google UK English Male">Google UK English Male</option>
+-->
+               <option value="Moira">Moira</option>
+               <option value="Tessa">Tessa</option>
+               <option value="Karen" selected="selected">Karen</option>
+            </select>
+         </div>
+
+      </section>
+   </div>
+</body>
+
+</html>
+<!--------------------------------------------------------------------------->
+<script language="JavaScript">
+
+   $( document ).ready( function() {
+            document.getElementById( 'button' ).click();
+      textToSpeech();
+      });
+   //-----------------------------------------------------------------------------
+   // Hotkey to excute Speech Synthesizer
+
+   document.onkeydown = function (e) {
+      if (e.which === 13)   { //  ENTER
+         $("body > div:nth-child(2) > input").css("background-color", "#a2bfc9").css("box-shadow", "0 2px #666").css("transform", "translateY(2px)");
+            e.preventDefault();
+      }
+   }
+   document.onkeyup = function (e) {
+      if (e.which === 13)   //  ENTER
+      {
+         $("body > div:nth-child(2) > input").css("background-color", "lightblue").css("box-shadow", "0 0px #ffffff").css("transform", "translateY(0px)");
+         textToSpeech();
+         e.preventDefault();
+      }
+   }
+   //-----------------------------------------------------------------------------
+   $('textarea').keypress(function (event) {
+      // Check the keyCode and if the user pressed Enter (code = 13)
+      // disable it
+      if (event.keyCode == 13) {
+         event.preventDefault();
+      }
+   });
+
+   //-----------------------------------------------------------------------------
+   $('select').keypress(function (event) {
+      // Check the keyCode and if the user pressed Enter (code = 13)
+      // disable it
+      if (event.keyCode == 13) {
+         event.preventDefault();
+      }
+   });
+
+   //-----------------------------------------------------------------------------
+   var availableVoices = null;
+
+   function textToSpeech() {
+      
+      // Wait forlanguages to load
+      if (window.speechSynthesis.getVoices().length == 0) {
+         window.speechSynthesis.addEventListener('voiceschanged', function () {
+             availableVoices = window.speechSynthesis.getVoices();      // Browser Voices Libreary
+         });
+      }
+      else {
+         availableVoices = window.speechSynthesis.getVoices();      // Browser Voices Libreary
+         console.log(availableVoices);
+
+         // this will hold an english voice
+         var english_voice = '';
+
+         // find voice by language locale "en-US"
+         // if not then select the first voice
+         for (var i = 0; i < availableVoices.length; i++) {
+            if (availableVoices[i].name === $( '#voices' ).val() ) {
+               english_voice = availableVoices[i];
+               break;
+            }
+         }
+         if (english_voice === '')
+            english_voice = availableVoices[0];
+
+         // new SpeechSynthesissayance object
+         var utter = new SpeechSynthesisUtterance();
+         utter.rate = rate.value;
+         utter.pitch = pitch.value;
+         utter.text = say.value;
+         utter.voice = english_voice;
+         utter.volume = parseFloat(volume.value);
+         utter.onend = function () {
+            console.log(say.value);
+         }
+         window.speechSynthesis.speak(utter);
+
+      }
+   }
+
+</script>
